@@ -1,12 +1,11 @@
 const md5 = require('md5');
 
-const { createUser } = require('./validator/user');
+const { createUser, updateUser } = require('./validator/user');
 const { User } = require('../models');
 const { handleResponse, handleError, handleSearchQuery, getPagination, sortingData, getPagingResults } = require('../utils/helpers');
 const { strings } = require('../utils/string');
 
 exports.create = async (req, res) => {
-
     const { error } = createUser.validate(req.body,);
 
     if (error) {
@@ -36,7 +35,6 @@ exports.findAll = (req, res) => {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
     const sortResponse = sortingData(req);
-
     User.findAndCountAll(
         {
             where: handleSearchQuery(req, ['first_name', 'last_name', 'email', 'id']),
@@ -63,59 +61,60 @@ exports.findOne = async (req, res) => {
         User.findByPk(id, {
         })
             .then(data => {
-                handleResponse(res, data.dataValues,strings.SuccessfullyRetrData, 1);
+                handleResponse(res, data.dataValues, strings.SuccessfullyRetrData, 1);
             }).catch(err => {
                 handleError(err, req, res, 0);
             });
 };
 
-// exports.update = async (req, res) => {
 
-//   const { error } = updateUser.validate(req.body,);
 
-//   if (error) {
-//     handleError(error, req, res)
-//     return
-//   }
+exports.update = async (req, res) => {
 
-//   const id = req.params.id;
+    const { error } = updateUser.validate(req.body,);
 
-//   const user = await User.findOne({ where: { id: id } })
+    if (error) {
+        handleError(error, req, res)
+        return
+    }
 
-//   if (user === null) { handleError(strings.UserNotFound, req, res) }
+    const id = req.params.id;
 
-//   else {
+    const user = await User.findOne({ where: { id: id } })
 
-//     const data = {
-//       first_name: req.body.first_name,
-//       last_name: req.body.last_name,
-//       mobile_number: req.body.mobile_number,
-//       email: req.body.email,
-//       role: req.body.role,
-//       status: req.body.status
-//     }
-//     User.update(data, { where: { id: id } })
-//       .then(data => {
-//         handleResponse(res, data, strings.UserSuccessfullyUpdate);
-//       }).catch(err => {
-//         handleError(err, req, res);
-//       })
-//   }
-// };
+    if (user === null) { handleError(strings.UserNotFound, req, res) }
 
-// exports.delete = async (req, res) => {
+    else {
+        const data = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            mobile_number: req.body.mobile_number,
+            email: req.body.email,
+            role: req.body.role,
+            status: req.body.status
+        };
 
-//   const id = req.params.id;
+        User.update(data, { where: { id: id } })
+            .then(data => {
+                handleResponse(res, [], strings.UserSuccessfullyUpdate);
+            }).catch(err => {
+                handleError(err, req, res);
+            })
+    }
+};
 
-//   const user = await User.findOne({ where: { id: id } })
+exports.delete = async (req, res) => {
 
-//   user === null ? handleError(strings.UserNotFound, req, res) :
+    const id = req.params.id;
 
-//     User.destroy({
-//       where: { id: req.params.id }
-//     }).then(data => {
-//       handleResponse(res, data, strings.UserSuccessfullyDelete);
-//     }).catch(err => {
-//       handleError(err, req, res);
-//     });
-// };
+    const user = await User.findOne({ where: { id: id } })
+
+    user === null ? handleError(strings.UserNotFound, req, res) :
+
+        User.destroy({ where: { id: req.params.id } })
+            .then(data => {
+                handleResponse(res, data, strings.UserSuccessfullyDelete);
+            }).catch(err => {
+                handleError(err, req, res);
+            });
+};

@@ -29,6 +29,11 @@ const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env
 
 const db = {
   User: require('./user')(sequelize, Sequelize),
+  Address:require('./address')(sequelize, Sequelize),
+  Location:require('./location')(sequelize, Sequelize),
+  Category:require('./food/category')(sequelize, Sequelize),
+  FoodItem:require('./food/foodItem')(sequelize, Sequelize),
+  Media:require('./media')(sequelize, Sequelize),
 
 }
 
@@ -37,12 +42,15 @@ const db = {
  * @link https://sequelize.org/docs/v6/core-concepts/assocs
  */
 
-// db.User.hasOne(db.Session, { foreignKey: { name: 'user_id', allowNull: false } })
-// db.Session.belongsTo(db.User, { foreignKey: { name: 'user_id', allowNull: false } })
+db.User.hasOne(db.Address, { foreignKey: { name: 'user_id', allowNull: false } })
+db.Address.belongsTo(db.User, { foreignKey: { name: 'user_id', allowNull: false } })
 
 
+db.Category.hasOne(db.FoodItem, { foreignKey: { name: 'category_id', allowNull: false } })
+db.FoodItem.belongsTo(db.Category, { foreignKey: { name: 'category_id', allowNull: false } })
 
-
+db.FoodItem.hasOne(db.Media, { foreignKey: { name: 'food_item_id', allowNull: false } })
+db.Media.belongsTo(db.FoodItem, { foreignKey: { name: 'food_item_id', allowNull: false } })
 
 module.exports = db
 

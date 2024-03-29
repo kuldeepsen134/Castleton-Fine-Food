@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const { Media } = require('../models')
 
 exports.handleError = (error, req, res, status = 0) => {
     // console.log('errorerrorerrorerror', error)
@@ -126,6 +127,31 @@ exports.mediaUpload = async (params) => {
 
     return mediaResponse
 }
+
+
+exports.getMediaFile = async (params) => {
+    const mediaData = await Media.findAll({ where: { food_item_id: params } })
+    for (let i = 0; i < mediaData.length; i++) {
+        const media = mediaData[i];
+        return media
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.sendEmail = async (email, name, subject, message) => {
 

@@ -1,24 +1,40 @@
-const md5 = require('md5')
-const { User } = require('../models')
-const { loginUser } = require('./validator/auth')
-const { handleError } = require('../utils/helpers')
-
+const md5 = require("md5");
+const { User } = require("../models");
+const { loginUser } = require("./validator/auth");
+const { handleError, handleResponse } = require("../utils/helpers");
+const jwt = require("jsonwebtoken");
+const { strings } = require("../utils/string");
 
 exports.login = async (req, res) => {
-
-  const { error } = loginUser.validate(req.body,)
+  const { error } = loginUser.validate(req.body);
 
   if (error) {
-    handleError(error, req, res, 0)
-    return
+    handleError(error, req, res, 0);
+    return;
   }
 
   console.log(md5(req.body.password));
 
-  const user = await User.findOne({ where: { email: req.body.email, password: md5(req.body.password) } })
-res.send({user})
+  const user = await User.findOne({
+    where: { email: req.body.email, password: md5(req.body.password) },
+  });
 
-}
+  if (!user) {
+    handleError(strings.EmailOrPasswordIncorrect, req, res, 0);
+    return;
+  }
+  const token = jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+    },
+    process.env.JWT_SECREATE,
+    { expiresIn: process.env.JWT_EXPIRESIN }
+  );
+
+  handleResponse(res, { token: token }, "LoggedIn Successfully!", 1);
+};
 
 // exports.resetPasswordEmail = async (req, res) => {
 
@@ -44,19 +60,19 @@ res.send({user})
 //     <div style="font-family: Helvetica,Arial,sans-serifmin-width:1000pxoverflow:autoline-height:2">
 //     <div style="margin:50px autowidth:60%padding:20px 0">
 //       <div style="border-bottom:1px solid #eee">
-//         <a href="" style="font-size:1.4emcolor: #00466atext-decoration:nonefont-weight:600">POS-System</a>
+//         <a href="" style="font-size:1.4emcolor: #00466atext-decoration:nonefont-weight:600">Castletone-Fine-Food</a>
 //       </div>
 //       <p style="font-size:25px">Hello ${user.first_name} ${user.last_name},</p>
-      
-//       <p>Use the code below to recover access to your POS-System account.</p>
-     
+
+//       <p>Use the code below to recover access to your Castletone-Fine-Food account.</p>
+
 //       <h3 style="background:#e6f3ffwidth:fullmargin: 0 autopadding:10px">
 //       <a href=${link} style=text-decoration:none><h3 style="background:#e6f3ffwidth:fullmargin: 0 autopadding:10px">Reset Password</h3></a></h3>
-      
+
 //       <p>The recovery code is only valid for 24 hours after it’s generated. If your code has already expired, you can restart the recovery process and generate a new code.
 //       If you haven't initiated an account recovery or password reset in the last 24 hours, ignore this message.</p>
 
-//       <p style="font-size:0.9em">Best Regards,<br />POS-System</p>
+//       <p style="font-size:0.9em">Castletone-Fine-Food,<br />Castletone-Fine-Food</p>
 //     </div>
 //   </div>
 //   </div>`
