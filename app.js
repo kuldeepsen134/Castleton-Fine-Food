@@ -12,19 +12,18 @@ const { authJWT } = require('./app/middleware/auth');
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(authJWT)
 
-require('./app/routes/user')(app);
-require('./app/routes/auth')(app);
+
 
 require('./app/routes/address')(app);
 require('./app/routes/food/category')(app);
 require('./app/routes/food/foodItem')(app);
+require('./app/routes/media')(app);
 
-
-
-
-
+app.use(authJWT)
+require('./app/routes/user')(app);
+require('./app/routes/auth')(app);
+require('./app/routes/addToCart')(app);
 
 
 
@@ -38,7 +37,4 @@ app.get('*', (req, res) => {
 })
 
 
-
-app.listen(port, host, () => {
-    console.log(`Server is running on ${host}:${port}`)
-});
+app.listen(port, host, () => console.log(`Server is running on ${host}:${port}`));

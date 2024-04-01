@@ -4,7 +4,6 @@ const { strings } = require("../../utils/string");
 const { createFoodItem } = require("../validator/fooodItem");
 
 exports.create = async (req, res) => {
-
     const { error } = createFoodItem.validate(req.body,)
 
     if (error) {
@@ -18,7 +17,6 @@ exports.create = async (req, res) => {
 
     FoodItem.create(data)
         .then(result => {
-
             if (req.file) {
                 const fileData = {
                     name: req.file.filename,
@@ -29,7 +27,6 @@ exports.create = async (req, res) => {
 
                 Media.create(fileData)
             }
-
 
             handleResponse(res, result, strings.FoodItemsSuccessfullyCreate, 1)
         }).catch(err => {
@@ -42,7 +39,11 @@ exports.findAll = (req, res) => {
     const { limit, offset } = getPagination(page, size);
     const sortResponse = sortingData(req);
 
-    FoodItem.findAndCountAll({ where: handleSearchQuery(req, ['name', 'last_name',]), order: [[sortResponse.sortKey, sortResponse.sortValue]], limit, offset, })
+    FoodItem.findAndCountAll({
+        where: handleSearchQuery(req, ['name', 'last_name',]), order: [[sortResponse.sortKey, sortResponse.sortValue]], include: [
+            { model: Media }
+        ], limit, offset,
+    })
         .then((data) => {
 
             for (let i = 0; i < data.rows.length; i++) {
@@ -50,8 +51,8 @@ exports.findAll = (req, res) => {
                 const x = getMediaFile(element.id)
             }
 
-
             handleResponse(res, getPagingResults(data, page, limit), strings.SuccessfullyRetrDataList, 1);
+
         }).catch(err => {
             handleError(err, req, res, 0);
         });

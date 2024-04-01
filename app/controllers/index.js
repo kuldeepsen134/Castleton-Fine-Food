@@ -4,5 +4,7 @@ module.exports = {
     address: require('./address'),
     categories: require('./food/category'),
     foodItems: require('./food/foodItem'),
+    addToCarts: require('./addToCart'),
+
 
 }

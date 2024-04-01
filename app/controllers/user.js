@@ -1,7 +1,7 @@
 const md5 = require('md5');
 
 const { createUser, updateUser } = require('./validator/user');
-const { User } = require('../models');
+const { User, Address } = require('../models');
 const { handleResponse, handleError, handleSearchQuery, getPagination, sortingData, getPagingResults } = require('../utils/helpers');
 const { strings } = require('../utils/string');
 
@@ -39,8 +39,9 @@ exports.findAll = (req, res) => {
         {
             where: handleSearchQuery(req, ['first_name', 'last_name', 'email', 'id']),
             order: [[sortResponse.sortKey, sortResponse.sortValue]],
+            include: [{ model: Address }],
             limit, offset,
-            attributes: { exclude: ['password'] },
+            attributes: { exclude: ['password', 'token', 'status'] },
         }
     )
         .then(data => {
