@@ -25,6 +25,9 @@ exports.strings = {
   FoodItemsSuccessfullyCreate: 'Food Item Created Successfully.',
 
   AddToCartCreated: 'Item successfully added to the cart.',
+  
+  OrderCreated: 'Order successfully created.',
+
 
 
 }

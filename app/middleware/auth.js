@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 exports.authJWT = async (req, res, next) => {
-  const pathArray = ['/api/register', '/api/login', '/api/google', '/api/reset-password', '/api/update-password',]
+  const pathArray = ['/api/users/register', '/api/login', '/api/google', '/api/reset-password', '/api/update-password',]
 
   if (pathArray.includes(req.path))
     return next()

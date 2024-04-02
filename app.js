@@ -24,6 +24,8 @@ app.use(authJWT)
 require('./app/routes/user')(app);
 require('./app/routes/auth')(app);
 require('./app/routes/addToCart')(app);
+require('./app/routes/order')(app);
+
 
 
 

@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER
       },
     },
-      {
+      { 
         createdAt: 'created_at',
         updatedAt: 'updated_at',
       }

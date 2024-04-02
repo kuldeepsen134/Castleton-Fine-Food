@@ -7,7 +7,7 @@ const { createAddToCart } = require("./validator/addToCart");
 
 
 exports.create = async (req, res) => {
-    const { quantity, price, food_item_id } = req.body;
+    const { quantity, food_item_id } = req.body;
 
     const { error } = createAddToCart.validate(req.body,);
     if (error) {
@@ -15,8 +15,12 @@ exports.create = async (req, res) => {
         return
     }
 
-    const data = { quantity, price, food_item_id, user_id: req.user.id }
+    const foodItem = await FoodItem.findOne({ where: { id: food_item_id } })
+    if (!foodItem) {
+        return handleError('Invalid food item Id', req, res, 0)
+    }
 
+    const data = { quantity, price: foodItem?.discounted_price, food_item_id, user_id: req.user.id }
     AddToCart.create(data)
         .then(cart => {
             handleResponse(res, cart, strings.AddToCartCreated, 1);

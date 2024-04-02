@@ -5,6 +5,8 @@ module.exports = {
     categories: require('./food/category'),
     foodItems: require('./food/foodItem'),
     addToCarts: require('./addToCart'),
+    orders: require('./order'),
+
 
 
 }
