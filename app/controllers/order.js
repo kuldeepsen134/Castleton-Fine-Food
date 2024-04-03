@@ -1,4 +1,4 @@
-const { AddToCart, Order, OrderItem } = require("../models");
+const { AddToCart, Order, OrderItem, User } = require("../models");
 const { handleResponse, handleError, getPagination, sortingData, getPagingResults } = require("../utils/helpers");
 const { strings } = require("../utils/string");
 
@@ -51,51 +51,52 @@ exports.create = async (req, res) => {
 };
 
 
-// exports.findAll = async (req, res) => {
-//     const { page, size } = req.query;
-//     const { limit, offset } = getPagination(page, size);
-//     const sortResponse = sortingData(req);
-
-//     const orders = await Order.findAndCountAll({
-//         where: { user_id: req.user.id, },
-//         order: [[sortResponse.sortKey, sortResponse.sortValue]],
-//         limit, offset,
-//     })
-
-//     const orderIds = orders.rows.map((order) => order.id)
-
-//     const orderItems = await OrderItem.findAndCountAll({
-//         where: { order_id: orderIds, },
-//         order: [[sortResponse.sortKey, sortResponse.sortValue]],
-//         limit, offset,
-//     })
-
-//     handleResponse(res, getPagingResults(orderItems, page, limit), strings.SuccessfullyRetrDataList, 1);
-// }
-
-
 exports.findAll = async (req, res) => {
     const { page, size } = req.query;
     const { limit, offset } = getPagination(page, size);
     const sortResponse = sortingData(req);
 
-    try {
-        // Fetch orders with associated order items using Sequelize associations
-        const orders = await Order.findAndCountAll({
-            where: { user_id: req.user.id },
-            include: [{
-                model: OrderItem,
-                separate: false
-            }],
-            order: [[sortResponse.sortKey, sortResponse.sortValue]],
-            limit,
-            offset
-        });
+    const orders = await Order.findAll({ where: { user_id: req.user.id } });
 
-        handleResponse(res, getPagingResults(orders, page, limit), strings.SuccessfullyRetrDataList, 1);
-    } catch (error) {
-        // Handle errors
-        console.error('Error while fetching orders:', error);
-        return res.status(500).json({ message: 'Internal server error' });
-    }
-}
+    const orderIds = orders.map(order => (order.id));
+    const orderItems = await OrderItem.findAll({ where: { order_id: orderIds }, })
+
+    const result = [];
+
+    // Iterate over each order
+    orders.forEach(order => {
+
+        const associatedOrderItems = orderItems.filter(item => item.order_id === order.id);
+
+        const orderObject = order.toJSON();
+        // Add the orderItems property to the order object
+        orderObject.orderItems = associatedOrderItems;
+        // Push the order object with orderItems into the result array
+        result.push(orderObject);
+    });
+
+    res.send({
+        items: result,
+        error: false,
+        message: strings.SuccessfullyRetrDataList,
+        status: 1
+    })
+
+
+    // handleResponse(res, result, strings.SuccessfullyRetrData, 1)
+
+};
+
+
+exports.findOne = async (req, res) => {
+    const { page, size } = req.query;
+    const { limit, offset } = getPagination(page, size);
+    const sortResponse = sortingData(req);
+
+    const order = await Order.findOne({ where: { id: req.params.id, user_id: req.user.id } });
+    const orderItems = await OrderItem.findAll({ where: { order_id: order.id }, })
+
+    const result = { ...order.dataValues, orderItems }
+    handleResponse(res, result, strings.SuccessfullyRetrData, 1)
+
+};

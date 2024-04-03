@@ -41,6 +41,8 @@ const db = {
   FoodItem: require('./food/foodItem')(sequelize, Sequelize),
   Media: require('./media')(sequelize, Sequelize),
   AddToCart: require('./addToCart')(sequelize, Sequelize),
+  WishList: require('./wishList')(sequelize, Sequelize),
+
   Order: require('./order')(sequelize, Sequelize),
   OrderItem: require('./orderItem')(sequelize, Sequelize),
 };
@@ -87,6 +89,19 @@ db.OrderItem.belongsTo(db.User, { foreignKey: { name: 'user_id', allowNull: fals
 // Order-OrderItem association
 db.Order.hasOne(db.OrderItem, { foreignKey: { name: 'order_id', allowNull: false } });
 db.OrderItem.belongsTo(db.Order, { foreignKey: { name: 'order_id', allowNull: false } });
+
+
+
+
+
+// User-AddToCart association
+db.User.hasOne(db.WishList, { foreignKey: { name: 'user_id', allowNull: false } });
+db.WishList.belongsTo(db.User, { foreignKey: { name: 'user_id', allowNull: false } });
+
+// FoodItem-WishList association
+db.FoodItem.hasOne(db.WishList, { foreignKey: { name: 'food_item_id', allowNull: false } });
+db.WishList.belongsTo(db.FoodItem, { foreignKey: { name: 'food_item_id', allowNull: false } });
+
 
 // Export the database models
 module.exports = db;

@@ -18,6 +18,7 @@ exports.strings = {
 
   SuccessfullyRetrData: "Successfully retrieved data.",
   SuccessfullyRetrDataList: "Successfully retrieved the list of all data.",
+  SuccessfullyRetrProfile: "Successfully retrieved profile.",
 
 
 
@@ -25,7 +26,10 @@ exports.strings = {
   FoodItemsSuccessfullyCreate: 'Food Item Created Successfully.',
 
   AddToCartCreated: 'Item successfully added to the cart.',
-  
+  WishListCreated: 'Item successfully added to the wish list.',
+  WishListNotFound: 'Wish list not found',
+  WishListSuccessfullyDelete: '  WishList successfully delete',
+
   OrderCreated: 'Order successfully created.',
 
 

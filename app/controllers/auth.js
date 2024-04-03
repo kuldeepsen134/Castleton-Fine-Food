@@ -138,12 +138,12 @@ exports.login = async (req, res) => {
 //   })
 // }
 
-// exports.me = async (req, res) => {
+exports.me = async (req, res) => {
 
-//   await User.findOne({ where: { id: req.headers.user_id } })
-//     .then(data => {
-//       handleResponse(res, data.dataValues)
-//     }).catch(err => {
-//       handleError(err, req, res)
-//     })
-// }
+  await User.findOne({ where: { id: req.user.id } })
+    .then(data => {
+      handleResponse(res, data.dataValues, strings.SuccessfullyRetrProfile, 1)
+    }).catch(err => {
+      handleError(err, req, res)
+    })
+}

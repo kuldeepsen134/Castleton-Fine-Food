@@ -10,8 +10,15 @@ const bodyParser = require('body-parser');
 const { authJWT } = require('./app/middleware/auth');
 
 
-app.use(cors());
 app.use(bodyParser.json());
+
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
+
 
 
 
@@ -24,6 +31,8 @@ app.use(authJWT)
 require('./app/routes/user')(app);
 require('./app/routes/auth')(app);
 require('./app/routes/addToCart')(app);
+require('./app/routes/wishList')(app);
+
 require('./app/routes/order')(app);
 
 

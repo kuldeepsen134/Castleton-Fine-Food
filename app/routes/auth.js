@@ -4,7 +4,7 @@ var router = require('express').Router();
 
 module.exports = app => {
 	router.post('/login', auths.login);
-	// router.get('/users', users.findAll);
+	router.get('/me', auths.me);
 	// router.get('/users/:id', users.findOne);
 
 
