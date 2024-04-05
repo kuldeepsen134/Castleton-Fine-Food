@@ -9,10 +9,5 @@ module.exports = app => {
 	router.patch('/address/:id', address.update);
 	router.delete('/address/:id', address.delete);
 
-
-
-
-
-
 	app.use('/api', router);
 };

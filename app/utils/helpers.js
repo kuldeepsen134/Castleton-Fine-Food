@@ -140,19 +140,6 @@ exports.getMediaFile = async (params) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.sendEmail = async (email, name, subject, message) => {
 
     const transporter = nodemailer.createTransport({
@@ -260,3 +247,116 @@ exports.getOrdes = async (orders) => {
   
     return data
   }
+
+
+
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path'); // Import the path module
+
+
+
+exports.generateInvoice = () => {
+    // Create a new PDF document
+    const doc = new PDFDocument();
+
+    // File path to save the generated PDF
+    const filePath = path.join(__dirname, "../invoices", 'example.pdf');
+
+    // Pipe the PDF document to a write stream
+    doc.pipe(fs.createWriteStream(filePath));
+
+    // Add content to the PDF
+    doc
+        .fontSize(27)
+        .text('Invoice', { align: 'center' })
+        .moveDown(); // Move down one line
+
+    // Add invoice details
+    doc
+        .fontSize(12)
+        .text('Invoice Date: January 1, 2024', 50, 120)
+        .text('Invoice Number: #123456789', 50, 140)
+        .moveDown(); // Move down one line
+
+    // Add customer information
+    doc
+        .fontSize(14)
+        .text('Customer Information:', 50, 180)
+        .fontSize(12)
+        .text('Name: John Doe', 50, 200)
+        .text('Email: john@example.com', 50, 220)
+        .moveDown(); // Move down one line
+
+    // Add order details
+    doc
+        .fontSize(14)
+        .text('Order Details:', 50, 260)
+        .fontSize(12)
+        .text('Product 1: $50', 50, 280)
+        .text('Product 2: $30', 50, 300)
+        .moveDown(); // Move down one line
+
+    // Add total amount
+    doc
+        .fontSize(16)
+        .text('Total Amount: $80', 50, 340);
+
+    // Finalize PDF file
+    doc.end();
+}
+
+
+exports.downloadInvoice = (orders) => {
+    // Create a new PDF document
+    const doc = new PDFDocument();
+
+    // File path to save the generated PDF
+    const filePath = path.join(__dirname, "../invoices", 'example.pdf');
+
+    // Pipe the PDF document to a write stream
+    doc.pipe(fs.createWriteStream(filePath));
+
+    // Add content to the PDF
+    doc
+        .fontSize(27)
+        .text('Invoice', { align: 'center' })
+        .moveDown(); // Move down one line
+
+    // Add invoice details
+    doc
+        .fontSize(12)
+        .text(`Invoice Date: ${orders.createdAt}`, 50, 120)
+        .text('Invoice Number: #123456789', 50, 140)
+        .moveDown(); // Move down one line
+
+    // Add customer information
+    doc
+        .fontSize(14)
+        .text('Customer Information:', 50, 180)
+        .fontSize(12)
+        .text('Name: John Doe', 50, 200)
+        .text('Email: john@example.com', 50, 220)
+        .moveDown(); // Move down one line
+
+    // Add order details
+
+    orders?.products?.map((item) => {
+        doc
+            .fontSize(14)
+            .text('Order Details:', 50, 260)
+            .fontSize(12)
+            .text(`Product 1: ${item.price}`, 50, 280)
+            .moveDown(); // Move down one line
+    })
+
+
+
+    // Add total amount
+    doc
+        .fontSize(16)
+        .text('Total Amount: $80', 50, 340);
+
+    // Finalize PDF file
+    doc.end();
+}

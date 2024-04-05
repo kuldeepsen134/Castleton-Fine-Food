@@ -2,6 +2,11 @@ const { AddToCart, Order, OrderItem, User } = require("../models");
 const { handleResponse, handleError, getPagination, sortingData, getPagingResults } = require("../utils/helpers");
 const { strings } = require("../utils/string");
 
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.STRIP_SEAC);
+const { v4: uuidv4 } = require('uuid');
+
+
 exports.create = async (req, res) => {
     try {
         const { items, address_id } = req.body;
@@ -65,9 +70,7 @@ exports.findAll = async (req, res) => {
 
     // Iterate over each order
     orders.forEach(order => {
-
         const associatedOrderItems = orderItems.filter(item => item.order_id === order.id);
-
         const orderObject = order.toJSON();
         // Add the orderItems property to the order object
         orderObject.orderItems = associatedOrderItems;
@@ -100,3 +103,24 @@ exports.findOne = async (req, res) => {
     handleResponse(res, result, strings.SuccessfullyRetrData, 1)
 
 };
+
+
+
+
+
+
+exports.payment = async (req, res) => {
+    const { order_id } = req.body;
+    const idemportencyKey = uuidv4()
+
+
+    const order = await Order.findOne({ where: { id: order_id } })
+
+    // stripe.customers.create({
+    //     email: 'customer@example.com',
+    // })
+    //     .then(customer => console.log(customer.id))
+    //     .catch(error => console.error(error));
+
+    console.log('idemportencyKey>>>>>>>>>>>>', order)
+}

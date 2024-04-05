@@ -10,13 +10,12 @@ const bodyParser = require('body-parser');
 const { authJWT } = require('./app/middleware/auth');
 
 
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'],
-    methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
+    credentials: true
 }));
 
 
@@ -26,8 +25,11 @@ require('./app/routes/address')(app);
 require('./app/routes/food/category')(app);
 require('./app/routes/food/foodItem')(app);
 require('./app/routes/media')(app);
+require('./app/routes/policy')(app);
 
-app.use(authJWT)
+
+app.use(authJWT);
+
 require('./app/routes/user')(app);
 require('./app/routes/auth')(app);
 require('./app/routes/addToCart')(app);

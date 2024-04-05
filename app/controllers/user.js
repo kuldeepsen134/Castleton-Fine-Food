@@ -19,7 +19,7 @@ exports.create = async (req, res) => {
         mobile_number: req.body.mobile_number,
         email: req.body.email,
         password: md5(req.body.password),
-        role: req.body.role,
+        role: 'customer',
     };
 
     User.create(data)
@@ -109,7 +109,10 @@ exports.delete = async (req, res) => {
     const id = req.params.id;
 
     const user = await User.findOne({ where: { id: id } })
-
+    if (user?.role === 'admin') {
+        handleError(strings.AdminForbidden, req, res, 0)
+        return
+    }
     user === null ? handleError(strings.UserNotFound, req, res) :
 
         User.destroy({ where: { id: req.params.id } })

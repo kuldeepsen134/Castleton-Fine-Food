@@ -9,6 +9,9 @@ exports.strings = {
   UserSuccessfullyUpdate: 'User successfully update',
   UserSuccessfullyDelete: 'User successfully delete',
   AccountDeactivated: 'Your account is deactivated. Please contact administrator',
+  AccessOnlyAdmin: 'Access to this resource is restricted to administrators only. Please log in with appropriate credentials to access this content.',
+
+  AdminForbidden: `Admin can't delete own account.`,
 
   YouSuccessfullyResetYourPassword: 'You successfully reset your password',
   ConfirmPasswordDoesNotMatch: 'Confirm password does not match',
@@ -32,6 +35,6 @@ exports.strings = {
 
   OrderCreated: 'Order successfully created.',
 
-
+  PolicyCreated: 'Privacy policy has been successfully created.'
 
 }

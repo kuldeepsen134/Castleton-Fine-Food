@@ -34,7 +34,12 @@ exports.fileHandler = (req, res, next) => {
     limits: { fileSize: 1024 * 1024 * 1024 * 5 },
     fileFilter: fileFilter,
   });
-  
+
 
   upload.single("image")(req, res, next);
+};
+
+exports.nullFile = (req, res, next) => {
+  const upload = multer();
+  upload.none()(req, res, next);
 };

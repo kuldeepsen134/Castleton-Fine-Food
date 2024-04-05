@@ -8,7 +8,6 @@ module.exports = {
     wishLists: require('./wishList'),
 
     orders: require('./order'),
-
-
-
+    policies: require('./policy'),
+    
 }

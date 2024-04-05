@@ -45,6 +45,9 @@ const db = {
 
   Order: require('./order')(sequelize, Sequelize),
   OrderItem: require('./orderItem')(sequelize, Sequelize),
+
+  Policy: require('./privacy')(sequelize, Sequelize),
+
 };
 
 // Define associations between models

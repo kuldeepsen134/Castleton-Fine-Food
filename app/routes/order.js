@@ -8,5 +8,9 @@ module.exports = app => {
 	router.get('/orders/:id', orders.findOne);
 
 
+	router.post('/payment', orders.payment);
+
+
+
 	app.use('/api', router);
 };

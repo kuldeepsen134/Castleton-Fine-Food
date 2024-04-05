@@ -4,8 +4,6 @@ const { strings } = require("../utils/string");
 const { createAddToCart } = require("./validator/addToCart");
 
 
-
-
 exports.create = async (req, res) => {
     const { quantity, food_item_id } = req.body;
 
@@ -20,7 +18,18 @@ exports.create = async (req, res) => {
         return handleError('Invalid food item Id', req, res, 0)
     }
 
-    const data = { quantity, price: foodItem?.discounted_price, food_item_id, user_id: req.user.id }
+
+
+    // if (FoodItem?.quantity >= quantity){
+
+    // }
+
+
+
+
+
+        const data = { quantity, price: foodItem?.discounted_price, food_item_id, user_id: req.user.id }
+
     AddToCart.create(data)
         .then(cart => {
             handleResponse(res, cart, strings.AddToCartCreated, 1);
