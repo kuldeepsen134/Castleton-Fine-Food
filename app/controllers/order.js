@@ -1,4 +1,4 @@
-const { AddToCart, Order, OrderItem, User } = require("../models");
+const { AddToCart, Order, OrderItem, User, FoodItem } = require("../models");
 const { handleResponse, handleError, getPagination, sortingData, getPagingResults } = require("../utils/helpers");
 const { strings } = require("../utils/string");
 
@@ -106,9 +106,6 @@ exports.findOne = async (req, res) => {
 
 
 
-
-
-
 exports.payment = async (req, res) => {
     const { order_id } = req.body;
     const idemportencyKey = uuidv4()
@@ -116,11 +113,56 @@ exports.payment = async (req, res) => {
 
     const order = await Order.findOne({ where: { id: order_id } })
 
+
+    if (!order) {
+        handleError(strings.InvalidOrderId, req, res, 0)
+        return
+    };
+
+    const orderItems = await OrderItem.findAll({ where: { order_id: order.id } })
+
+    const cartIds = orderItems?.map((orderItem) => orderItem.cart_id)
+
+    const addtoCarts = await AddToCart.findAll({ where: { id: cartIds } })
+    const foodIds = []
+    const foods = []
+
+    addtoCarts?.map((cart) => {
+        foodIds.push(cart.food_item_id)
+        foods.push({
+            id: cart.food_item_id,
+            quantity: cart.food_item_id
+        })
+    })
+
+    const foodItems = await FoodItem.findAll({ where: { id: foodIds } })
+
+    foodItems.map((item,i)=>{
+        foods.map((f)=>{
+            
+        }) 
+    })
+
+    // FoodItem.update({ quantity: 'paid' }, { where: { id: order.id }, })
+    //     .then((result) => {
+    //         handleResponse(res, result, strings.PaymentSuccess, 1)
+    //     })
+    //     .catch(err => handleError(err, req, res, 0))
+
+    console.log('addtoCarts>>>>>>>>>>>', foods);
+
+
+
+
+    // Order.update({ status: 'paid' }, { where: { id: order.id }, })
+    //     .then((result) => {
+    //         handleResponse(res, result, strings.PaymentSuccess, 1)
+    //     })
+    //     .catch(err => handleError(err, req, res, 0))
+
     // stripe.customers.create({
     //     email: 'customer@example.com',
     // })
     //     .then(customer => console.log(customer.id))
     //     .catch(error => console.error(error));
-
-    console.log('idemportencyKey>>>>>>>>>>>>', order)
 }

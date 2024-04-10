@@ -79,29 +79,32 @@ exports.update = async (req, res) => {
         return
     }
 
-    const id = req.params.id;
+    const { id } = req.params
 
     const user = await User.findOne({ where: { id: id } })
 
-    if (user === null) { handleError(strings.UserNotFound, req, res) }
-
-    else {
-        const data = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            mobile_number: req.body.mobile_number,
-            email: req.body.email,
-            role: req.body.role,
-            status: req.body.status
-        };
-
-        User.update(data, { where: { id: id } })
-            .then(data => {
-                handleResponse(res, [], strings.UserSuccessfullyUpdate);
-            }).catch(err => {
-                handleError(err, req, res);
-            })
+    if (!user) {
+        handleError(strings.UserNotFound, req, res)
+        return
     }
+
+
+    const data = {
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        mobile_number: req.body.mobile_number,
+        email: req.body.email,
+        role: req.body.role,
+        status: req.body.status
+    };
+
+    User.update(data, { where: { id: id } })
+        .then(data => {
+            handleResponse(res, [], strings.UserSuccessfullyUpdate);
+        }).catch(err => {
+            handleError(err, req, res);
+        })
+
 };
 
 exports.delete = async (req, res) => {

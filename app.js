@@ -1,14 +1,15 @@
 const express = require('express')
 const app = express();
 require('dotenv').config()
-const port = process.env.PORT || 4500;
-const host = '192.168.0.23';
+
 
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { authJWT } = require('./app/middleware/auth');
 
+const { config } = require('./app/config/config');
+const {serverPort} =config;
 
 app.use(bodyParser.json())
 
@@ -27,6 +28,7 @@ require('./app/routes/food/foodItem')(app);
 require('./app/routes/media')(app);
 require('./app/routes/policy')(app);
 
+require('./app/routes/order')(app);
 
 app.use(authJWT);
 
@@ -35,7 +37,6 @@ require('./app/routes/auth')(app);
 require('./app/routes/addToCart')(app);
 require('./app/routes/wishList')(app);
 
-require('./app/routes/order')(app);
 
 
 
@@ -50,4 +51,4 @@ app.get('*', (req, res) => {
 })
 
 
-app.listen(port, host, () => console.log(`Server is running on ${host}:${port}`));
+app.listen(serverPort, () => console.log(`Server is running port on ${serverPort}`));

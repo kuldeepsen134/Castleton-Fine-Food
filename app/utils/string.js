@@ -4,10 +4,12 @@ exports.strings = {
   authSuccessMessage: 'Logged in successfully.',
   EmailOrPasswordIncorrect: 'Email or Password Incorrect.',
   WeHaveSentRecoveryCodeToTheEmail: `We have sent recovery code to the email on`,
+  
   UserSuccessFullyCreate: 'User successfully create',
-  UserNotFound: 'User not found',
   UserSuccessfullyUpdate: 'User successfully update',
   UserSuccessfullyDelete: 'User successfully delete',
+  UserNotFound: 'User not found',
+  
   AccountDeactivated: 'Your account is deactivated. Please contact administrator',
   AccessOnlyAdmin: 'Access to this resource is restricted to administrators only. Please log in with appropriate credentials to access this content.',
 
@@ -34,7 +36,11 @@ exports.strings = {
   WishListSuccessfullyDelete: '  WishList successfully delete',
 
   OrderCreated: 'Order successfully created.',
+  InvalidOrderId: 'Invalid order ID',
+  PaymentSuccess: 'payment has been done',
 
-  PolicyCreated: 'Privacy policy has been successfully created.'
+  PolicyCreated: 'Privacy policy has been successfully created.',
+  PolicyUpdate: 'Privacy policy has been successfully updated.'
+
 
 }

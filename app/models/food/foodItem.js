@@ -15,7 +15,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.TEXT('long'),
     },
     quantity: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.FLOAT,
+    },
+    total_quantity: {
+      type: Sequelize.FLOAT,
     },
     regular_price: {
       type: Sequelize.INTEGER,
@@ -29,7 +32,7 @@ module.exports = (sequelize, Sequelize) => {
     food_item_type: {
       type: Sequelize.STRING,
       validate: {
-        isIn: [['vegetarian', 'non_vegetarian', 'aggeterian']]
+        isIn: [['vegetarian', 'non_vegetarian', 'eggeterian']]
       }
     },
     backorders: {

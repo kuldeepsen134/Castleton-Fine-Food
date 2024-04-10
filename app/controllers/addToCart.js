@@ -18,17 +18,7 @@ exports.create = async (req, res) => {
         return handleError('Invalid food item Id', req, res, 0)
     }
 
-
-
-    // if (FoodItem?.quantity >= quantity){
-
-    // }
-
-
-
-
-
-        const data = { quantity, price: foodItem?.discounted_price, food_item_id, user_id: req.user.id }
+    const data = { quantity, price: foodItem?.discounted_price, food_item_id, user_id: req.user.id }
 
     AddToCart.create(data)
         .then(cart => {

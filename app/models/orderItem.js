@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
         defaultValue: Sequelize.UUIDV4,
       },
       quantity: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT
       },
       price: {
         type: Sequelize.INTEGER

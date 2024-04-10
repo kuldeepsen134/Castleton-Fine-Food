@@ -1,6 +1,10 @@
 const nodemailer = require('nodemailer')
 const { Media, OrderItem } = require('../models')
 
+const { config } = require('../config/config')
+const { emailHost, emailPort, emailUser, emailPassword, emailFrom } = config
+
+
 exports.handleError = (error, req, res, status = 0) => {
     // console.log('errorerrorerrorerror', error)
     if (error.details) {
@@ -143,19 +147,19 @@ exports.getMediaFile = async (params) => {
 exports.sendEmail = async (email, name, subject, message) => {
 
     const transporter = nodemailer.createTransport({
-        host: `${process.env.EMAIL_HOST}`,
-        port: `${process.env.EMAIL_PORT}`,
+        host: `${emailHost}`,
+        port: `${emailPort}`,
         auth: {
-            user: `${process.env.EMAIL_USER}`,
-            pass: `${process.env.EMAIL_PASSWORD}`
+            user: `${emailUser}`,
+            pass: `${emailPassword}`
         },
         // secure: true
     })
 
     const data = {
-        from: `${process.env.EMAIL_FROM}`,
+        from: `${emailFrom}`,
         to: `${email}`,
-        subject: `${subject} - POS-System`,
+        subject: `${subject} - Castleton-fine-food`,
         html: `${message}`,
     }
 
@@ -181,72 +185,72 @@ exports.emailEncyption = (params) => {
 exports.getOrdes = async (orders) => {
     const ids = []
     orders.rows.map((item) => {
-      ids.push(item.id)
+        ids.push(item.id)
     })
-  
+
     const orderItems = await OrderItem.findAll({ where: { order_id: ids } })
-  
+
     const attributeId = []
     const attributeValueId = []
-    
+
     orderItems.map((item) => {
-      attributeId.push(item.attribute_id)
-      attributeValueId.push(item.attribute_value_id)
+        attributeId.push(item.attribute_id)
+        attributeValueId.push(item.attribute_value_id)
     })
-  
+
     const attribute = await Attribute.findAll({ where: { id: attributeId } })
-  
+
     const attributes = attribute.map((item, i) => {
-      return ({
-        id: item.id,
-        name: item.name,
-        slug: item.slug
-      })
+        return ({
+            id: item.id,
+            name: item.name,
+            slug: item.slug
+        })
     })
-  
+
     const attributeValue = await AttributesValue.findAll({ where: { id: attributeValueId } })
-  
+
     const attributeValues = attributeValue.map((item, i) => {
-      return ({
-        id: item.id,
-        name: item.name,
-        slug: item.slug
-      })
+        return ({
+            id: item.id,
+            name: item.name,
+            slug: item.slug
+        })
     })
     const result = products.rows.map((item, i) => {
-  
-      const totalClickedEmail = productAttributesRelationship.filter((id) => { return (id.product_id == item.id) })
-      const attributeData = attribute.filter((id)=> { return (id.id == totalClickedEmail[i].attribute_id) })
-      console.log("attributeData", attributeData);
-  
-      return ({
-          id: item.id,
-          name: item.name,
-          barcode: item.barcode,
-          description: item.description,
-          short_description: item.short_description,
-          sku: item.sku,
-          stock: item.stock,
-          regular_price: item.regular_price,
-          discounted_price: item.discounted_price,
-          cost_per_item: item.cost_per_item,
-          low_stock_threshold: item.low_stock_threshold,
-          product_type: item.product_type,
-          backorders: item.backorders,
-          stock_status: item.stock_status,
-          manage_stock: item.manage_stock,
-          dimensions: item.dimensions,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-          attributes: attributeData,
-          // attributeValues: attributeValues[i]
-      })
+
+        const totalClickedEmail = productAttributesRelationship.filter((id) => { return (id.product_id == item.id) })
+        const attributeData = attribute.filter((id) => { return (id.id == totalClickedEmail[i].attribute_id) })
+        console.log("attributeData", attributeData);
+
+        return ({
+            id: item.id,
+            name: item.name,
+            barcode: item.barcode,
+            description: item.description,
+            short_description: item.short_description,
+            sku: item.sku,
+            stock: item.stock,
+            regular_price: item.regular_price,
+            discounted_price: item.discounted_price,
+            cost_per_item: item.cost_per_item,
+            low_stock_threshold: item.low_stock_threshold,
+            product_type: item.product_type,
+            backorders: item.backorders,
+            stock_status: item.stock_status,
+            manage_stock: item.manage_stock,
+            dimensions: item.dimensions,
+            created_at: item.created_at,
+            updated_at: item.updated_at,
+            attributes: attributeData,
+            // attributeValues: attributeValues[i]
+        })
     })
-  
-    const data = {count: products.count, rows: result}
-  
+
+    const data = { count: products.count, rows: result }
+
     return data
-  }
+}
 
 
 

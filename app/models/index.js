@@ -1,8 +1,10 @@
 const Sequelize = require('sequelize');
+const { config } = require('../config/config');
+const { database, dbHolst, dbUser,dbPassword } = config
 
 // Establishing connection to the database
-const sequelize = new Sequelize(process.env.DB, process.env.DB_USER, process.env.DB_PASSWORD, {
-  host: process.env.DB_HOST,
+const sequelize = new Sequelize(database, dbUser, dbPassword, {
+  host: dbHolst,
   dialect: 'mysql',
   operatorsAliases: 0, // Suppressing deprecated operator aliases
   hooks: {

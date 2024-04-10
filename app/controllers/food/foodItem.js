@@ -13,7 +13,7 @@ exports.create = async (req, res) => {
 
     const { name, description, short_description, quantity, regular_price, discounted_price, cost_per_item, food_item_type, backorders, stock_status, is_jain, category_id } = req.body
 
-    const data = { name, description, short_description, quantity, regular_price, discounted_price, cost_per_item, food_item_type, backorders, stock_status, is_jain, category_id }
+    const data = { name, description, short_description, quantity, total_quantity: quantity, regular_price, discounted_price, cost_per_item, food_item_type, backorders, stock_status, is_jain, category_id }
 
     FoodItem.create(data)
         .then(result => {
