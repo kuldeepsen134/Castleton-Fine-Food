@@ -33,7 +33,7 @@ exports.handleResponse = (res, data, message, status = 1) => {
         res.req.method === 'PUT' || res.req.method === 'DELETE' ? res.status(200).send({ message, error: false, status }) : res.status(200).send({ data, message, error: false, status })
         return
     } else
-        res.status(200).send({ ...data, message, status })
+        res.status(200).send({ ...data, message, error: false, status  })
 };
 
 

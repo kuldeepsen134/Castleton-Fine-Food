@@ -1,5 +1,4 @@
 const { address } = require('../controllers');
-
 var router = require('express').Router();
 
 module.exports = app => {

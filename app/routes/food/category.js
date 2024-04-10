@@ -9,8 +9,5 @@ module.exports = app => {
 	router.patch('/categories/:id', categories.update);
 	router.delete('/categories/:id', categories.delete);
 
-
-
-
 	app.use('/api', router);
 };

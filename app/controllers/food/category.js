@@ -2,10 +2,9 @@ const { Category } = require('../../models/index')
 
 const { handleError, getPagination, handleSearchQuery, getPagingResults, handleResponse, sortingData, getSlug } = require('../../utils/helpers')
 const { strings } = require('../../utils/string')
-const { createCategory } = require('../validator/category')
+const { createCategory, updateCategory } = require('../validator/category')
 
 exports.create = async (req, res) => {
-
   const { error } = createCategory.validate(req.body,)
 
   if (error) {
@@ -60,63 +59,72 @@ exports.findAll = (req, res) => {
 }
 
 exports.findOne = async (req, res) => {
-  const id = req.params.id
-  const category = await Category.findOne({ where: { id: id } })
-  category ?
-    Category.findByPk(id)
-      .then(data => {
-        handleResponse(res, data.dataValues)
-      }).catch(err => {
-        handleError(err, req, res)
-      }) :
-    handleError(strings.InvalidCategoryId, req, res)
-}
+  try {
+    const { id } = req.params;
+
+    const category = await Category.findOne({ where: { id: id } })
+
+    if (!category) {
+      handleError(strings.InvalidCategory, req, res, 0);
+      return
+    };
+
+    handleResponse(res, category.dataValues, strings.SuccessfullyRetrData, 1)
+
+  } catch (error) {
+    handleError(error, req, res, 0)
+  }
+};
+
+
 
 exports.update = async (req, res) => {
-  const { error } = updateCategory.validate(req.body,)
+  try {
+    const { error } = updateCategory.validate(req.body,)
 
-  if (error) {
-    handleError(error, req, res)
-    return
-  }
+    if (error) {
+      handleError(error, req, res)
+      return
+    }
 
-  const id = req.params.id
-  const category = await Category.findOne({ where: { id: id } })
+    const { id } = req.params
+    const category = await Category.findOne({ where: { id: id } })
 
-  if (category) {
-    // const slug = await getSlug(req.body.name)
+    if (!category) {
+      handleError(strings.InvalidCategory, req, res)
+      return
+    }
 
     const data = {
       name: req.body.name,
       parent_id: req.body.parent_id,
-      // slug: req.body.slug ? req.body.slug : slug ,
       description: req.body.description
-    }
-    Category.update(data, { where: { id: id } })
-      .then(data => {
-        handleResponse(res, data, strings.CategorySuccessfullyUpdate)
-      }).catch(err => {
-        handleError(err, req, res)
-      })
-  } else {
-    handleError(strings.InvalidCategoryId, req, res)
-  }
+    };
 
-}
+    await Category.update(data, { where: { id: id } })
+
+    handleResponse(res, [], strings.CategorySuccessfullyUpdate, 1)
+
+  } catch (error) {
+    handleError(err, req, res, 0)
+  }
+};
 
 exports.delete = async (req, res) => {
+  try {
+    const { id } = req.params
+    const category = await Category.findOne({ where: { id: id } })
 
-  const id = req.params.id
+    if (!category) {
+      handleError(strings.InvalidCategory, req, res)
+      return;
+    }
 
-  const category = await Category.findOne({ where: { id: id } })
+    await Category.destroy({ where: { id: id } })
+    
+    handleResponse(res, [], strings.CategorySuccessfullyDelete, 1)
 
-  category ?
-
-    Category.destroy({ where: { id: id } })
-      .then(data => {
-        handleResponse(res, data, strings.CategorySuccessfullyDelete)
-      }).catch(err => {
-        handleError(err, req, res)
-      }) :
-    handleError(strings.InvalidCategoryId, req, res)
-}
+  } catch (error) {
+    handleError(error, req, res, 0)
+  }
+};

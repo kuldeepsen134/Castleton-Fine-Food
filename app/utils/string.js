@@ -4,12 +4,28 @@ exports.strings = {
   authSuccessMessage: 'Logged in successfully.',
   EmailOrPasswordIncorrect: 'Email or Password Incorrect.',
   WeHaveSentRecoveryCodeToTheEmail: `We have sent recovery code to the email on`,
-  
+
   UserSuccessFullyCreate: 'User successfully create',
   UserSuccessfullyUpdate: 'User successfully update',
   UserSuccessfullyDelete: 'User successfully delete',
   UserNotFound: 'User not found',
-  
+
+
+  InvalidAddressId: 'Invalid address Id',
+  AddressSuccessfullyUpdate: 'Address successfully update',
+
+  AddressSuccessfullyRemove: 'Address successfully delete',
+
+
+  InvalidCartId: 'Invalid cart Id',
+  CartSuccessfullyUpdate: 'Cart successfully update',
+
+  CartSuccessfullyRemove: 'Cart successfully delete',
+
+
+
+
+
   AccountDeactivated: 'Your account is deactivated. Please contact administrator',
   AccessOnlyAdmin: 'Access to this resource is restricted to administrators only. Please log in with appropriate credentials to access this content.',
 
@@ -28,6 +44,14 @@ exports.strings = {
 
 
   CategorySuccessfullyCreate: 'Category Successfully Created.',
+  InvalidCategory: 'Invalid category ID.',
+  CategorySuccessfullyUpdate: 'Category successfully update.',
+  CategorySuccessfullyDelete: 'Category successfully deleted.',
+
+
+
+
+
   FoodItemsSuccessfullyCreate: 'Food Item Created Successfully.',
 
   AddToCartCreated: 'Item successfully added to the cart.',

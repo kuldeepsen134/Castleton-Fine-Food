@@ -14,6 +14,7 @@ exports.create = async (req, res) => {
     }
 
     const foodItem = await FoodItem.findOne({ where: { id: food_item_id } })
+
     if (!foodItem) {
         return handleError('Invalid food item Id', req, res, 0)
     }
@@ -42,7 +43,6 @@ exports.findAll = (req, res) => {
 
             ],
             limit, offset,
-            // attributes: { exclude: ['password', 'token', 'status'] },
         }
     )
         .then(data => {
@@ -50,4 +50,79 @@ exports.findAll = (req, res) => {
         }).catch(err => {
             handleError(err, req, res, 0);
         });
+};
+
+
+exports.findOne = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const { quantity } = req.body;
+
+        const addToCart = await AddToCart.findOne({ where: { id: id } },)
+
+        if (!addToCart) {
+            handleError(strings.InvalidCartId, req, res, 0);
+            return
+        }
+
+        handleResponse(res, addToCart.dataValues, strings.SuccessfullyRetrDataList, 1);
+    } catch (error) {
+        handleError(error, req, res, 0);
+    }
+};
+
+
+
+exports.update = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        const addToCart = await AddToCart.findOne({ where: { id: id } })
+
+        if (!addToCart) {
+            handleError(strings.InvalidCartId, req, res, 0);
+            return
+        };
+
+        const data = {
+            user_id: req.body.user_id,
+            address1: req.body.address1,
+            address2: req.body.address2,
+            city: req.body.city,
+            province: req.body.province,
+            country: req.body.country,
+            postcode: req.body.postcode,
+            status: req.body.status,
+        };
+
+        // const addressUpdate = await Address.update(data, { where: { id: id } })
+
+        handleResponse(res, [], strings.AddressSuccessfullyUpdate, 1);
+
+    } catch (error) {
+        handleError(error, req, res, 0);
+    }
+
+
+
+};
+
+
+exports.delete = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const addToCart = await AddToCart.findOne({ where: { id: id } })
+
+        if (!addToCart) {
+            handleError(strings.InvalidCartId, req, res, 0);
+            return
+        };
+
+        await AddToCart.destroy({ where: { id: id } });
+        handleResponse(res, [], strings.CartSuccessfullyRemove, 1);
+
+    } catch (error) {
+        handleError(error, req, res, 0);
+    }
 };
