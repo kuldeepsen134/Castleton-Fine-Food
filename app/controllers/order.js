@@ -48,6 +48,8 @@ exports.create = async (req, res) => {
         }
         await OrderItem.bulkCreate(orderItems);
 
+        items.map((element) => AddToCart.destroy({ where: { id: element.cart_id } }))
+
         handleResponse(res, order, strings.OrderCreated, 1);
 
     } catch (err) {
@@ -108,11 +110,7 @@ exports.findOne = async (req, res) => {
 
 exports.payment = async (req, res) => {
     const { order_id } = req.body;
-    // const idemportencyKey = uuidv4()
-
-
     const order = await Order.findOne({ where: { id: order_id } })
-
 
     if (!order) {
         handleError(strings.InvalidOrderId, req, res, 0)
@@ -130,39 +128,43 @@ exports.payment = async (req, res) => {
     addtoCarts?.map((cart) => {
         foodIds.push(cart.food_item_id)
         foods.push({
-            id: cart.food_item_id,
-            quantity: cart.food_item_id
+            food_item_id: cart.food_item_id,
+            quantity: cart.quantity
         })
     })
 
-    const foodItems = await FoodItem.findAll({ where: { id: foodIds } })
 
-    foodItems.map((item,i)=>{
-        foods.map((f)=>{
-            
-        }) 
+
+    const x = foods.map(async (item) => {
+        const foodItems = await FoodItem.findOne({ where: { id: item.food_item_id } })
+
+        await FoodItem.update({ quantity: foodItems.quantity - item.quantity, }, { where: { id: item.food_item_id }, })
     })
 
-    // FoodItem.update({ quantity: 'paid' }, { where: { id: order.id }, })
-    //     .then((result) => {
-    //         handleResponse(res, result, strings.PaymentSuccess, 1)
-    //     })
-    //     .catch(err => handleError(err, req, res, 0))
 
-    console.log('addtoCarts>>>>>>>>>>>', foods);
+    await Order.update({ status: 'paid' }, { where: { id: order.id }, })
 
+    console.log('addtoCarts>>>>>>>>>>>', x);
 
-
-
-    // Order.update({ status: 'paid' }, { where: { id: order.id }, })
-    //     .then((result) => {
-    //         handleResponse(res, result, strings.PaymentSuccess, 1)
-    //     })
-    //     .catch(err => handleError(err, req, res, 0))
-
-    // stripe.customers.create({
-    //     email: 'customer@example.com',
-    // })
-    //     .then(customer => console.log(customer.id))
-    //     .catch(error => console.error(error));
+    handleResponse(res, x, strings.PaymentSuccess, 1)
 }
+
+// FoodItem.update({ quantity: 'paid' }, { where: { id: order.id }, })
+//     .then((result) => {
+//         handleResponse(res, result, strings.PaymentSuccess, 1)
+//     })
+//     .catch(err => handleError(err, req, res, 0))
+
+
+
+// Order.update({ status: 'paid' }, { where: { id: order.id }, })
+//     .then((result) => {
+//         handleResponse(res, result, strings.PaymentSuccess, 1)
+//     })
+//     .catch(err => handleError(err, req, res, 0))
+
+// stripe.customers.create({
+//     email: 'customer@example.com',
+// })
+//     .then(customer => console.log(customer.id))
+//     .catch(error => console.error(error));
