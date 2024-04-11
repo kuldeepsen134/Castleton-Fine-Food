@@ -22,7 +22,7 @@ exports.strings = {
 
   CartSuccessfullyRemove: 'Cart successfully delete',
 
-
+  ThankYourforSubscribe: 'Thank you for subscribing!',
 
 
 
@@ -55,7 +55,7 @@ exports.strings = {
   FoodItemsSuccessfullyCreate: 'Food Item Created Successfully.',
   FoodItemsSuccessfullyUpdated: 'Food Item Successfully updated.',
   FoodItemsSuccessfullyDeleted: 'Food Item deleted.',
-  InvalidFoodId:'Invalid food ID',
+  InvalidFoodId: 'Invalid food ID',
 
 
 
@@ -73,6 +73,6 @@ exports.strings = {
   PolicyUpdate: 'Privacy policy has been successfully updated.',
   PolicyDeleted: 'Privacy policy has been successfully deleted.',
 
-  InvalidPolicyId:'Invalid policy ID',
+  InvalidPolicyId: 'Invalid policy ID',
 
 }

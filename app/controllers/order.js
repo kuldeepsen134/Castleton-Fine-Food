@@ -108,7 +108,7 @@ exports.findOne = async (req, res) => {
 
 exports.payment = async (req, res) => {
     const { order_id } = req.body;
-    const idemportencyKey = uuidv4()
+    // const idemportencyKey = uuidv4()
 
 
     const order = await Order.findOne({ where: { id: order_id } })

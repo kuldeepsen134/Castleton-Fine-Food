@@ -1,6 +1,5 @@
 const { policies } = require('../controllers');
 const { authAdmin, authJWT } = require('../middleware/auth');
-const express = require('express');
 const { nullFile } = require('../middleware/fileHandler');
 
 var router = require('express').Router();

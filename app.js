@@ -29,6 +29,8 @@ require('./app/routes/media')(app);
 require('./app/routes/policy')(app);
 
 require('./app/routes/order')(app);
+require('./app/routes/subscriber')(app);
+
 
 app.use(authJWT);
 

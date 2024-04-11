@@ -9,5 +9,5 @@ module.exports = {
 
     orders: require('./order'),
     policies: require('./policy'),
-    
+    subscribers: require('./subscriber'),
 }

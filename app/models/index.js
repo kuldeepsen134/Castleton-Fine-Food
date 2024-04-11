@@ -51,6 +51,8 @@ const db = {
   OrderItem: require('./orderItem')(sequelize, Sequelize),
 
   Policy: require('./privacy')(sequelize, Sequelize),
+  Subscriber: require('./subscriber')(sequelize, Sequelize),
+
 
 };
 
