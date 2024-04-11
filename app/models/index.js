@@ -7,6 +7,8 @@ const sequelize = new Sequelize(database, dbUser, dbPassword, {
   host: dbHolst,
   dialect: 'mysql',
   operatorsAliases: 0, // Suppressing deprecated operator aliases
+  logging: false,
+
   hooks: {
     // Define hooks for operations performed on database records
     // beforeDefine: function (columns, model) {

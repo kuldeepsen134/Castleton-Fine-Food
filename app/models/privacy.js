@@ -6,7 +6,8 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: Sequelize.UUIDV4,
         },
         policy_name: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            
         },
         policy_content: {
             type: Sequelize.STRING

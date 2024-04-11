@@ -53,6 +53,12 @@ exports.strings = {
 
 
   FoodItemsSuccessfullyCreate: 'Food Item Created Successfully.',
+  FoodItemsSuccessfullyUpdated: 'Food Item Successfully updated.',
+  FoodItemsSuccessfullyDeleted: 'Food Item deleted.',
+  InvalidFoodId:'Invalid food ID',
+
+
+
 
   AddToCartCreated: 'Item successfully added to the cart.',
   WishListCreated: 'Item successfully added to the wish list.',
@@ -64,7 +70,9 @@ exports.strings = {
   PaymentSuccess: 'payment has been done',
 
   PolicyCreated: 'Privacy policy has been successfully created.',
-  PolicyUpdate: 'Privacy policy has been successfully updated.'
+  PolicyUpdate: 'Privacy policy has been successfully updated.',
+  PolicyDeleted: 'Privacy policy has been successfully deleted.',
 
+  InvalidPolicyId:'Invalid policy ID',
 
 }
