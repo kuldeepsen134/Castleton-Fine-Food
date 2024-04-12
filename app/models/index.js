@@ -52,8 +52,8 @@ const db = {
 
   Policy: require('./privacy')(sequelize, Sequelize),
   Subscriber: require('./subscriber')(sequelize, Sequelize),
-
-
+  Subscription: require('./subscription')(sequelize, Sequelize),
+  Frequency: require('./frequency')(sequelize, Sequelize),
 };
 
 // Define associations between models
@@ -110,6 +110,25 @@ db.WishList.belongsTo(db.User, { foreignKey: { name: 'user_id', allowNull: false
 // FoodItem-WishList association
 db.FoodItem.hasOne(db.WishList, { foreignKey: { name: 'food_item_id', allowNull: false } });
 db.WishList.belongsTo(db.FoodItem, { foreignKey: { name: 'food_item_id', allowNull: false } });
+
+
+
+// User-Frequency association
+db.User.hasOne(db.Frequency, { foreignKey: { name: 'user_id', allowNull: false } });
+db.Frequency.belongsTo(db.User, { foreignKey: { name: 'user_id', allowNull: false } });
+
+
+// Frequency-Subscription association
+db.Subscription.hasOne(db.Frequency, { foreignKey: { name: 'subscription_id', allowNull: false } });
+db.Frequency.belongsTo(db.Subscription, { foreignKey: { name: 'subscription_id', allowNull: false } });
+
+
+// Frequency-Subscription association
+db.Order.hasOne(db.Frequency, { foreignKey: { name: 'order_id', allowNull: false } });
+db.Frequency.belongsTo(db.Order, { foreignKey: { name: 'order_id', allowNull: false } });
+
+
+
 
 
 // Export the database models

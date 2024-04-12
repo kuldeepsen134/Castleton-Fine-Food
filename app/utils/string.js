@@ -75,4 +75,12 @@ exports.strings = {
 
   InvalidPolicyId: 'Invalid policy ID',
 
+
+
+
+  FrequencyCreated: 'Frequency created successfully',
+  FrequencyNotFound: 'Frequency not found.',
+  
+  SubscriptionCreated: 'Subscription created successfully',
+
 }

@@ -107,7 +107,6 @@ exports.findOne = async (req, res) => {
 };
 
 
-
 exports.payment = async (req, res) => {
     const { order_id } = req.body;
     const order = await Order.findOne({ where: { id: order_id } })

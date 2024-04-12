@@ -14,7 +14,6 @@ exports.create = async (req, res) => {
         return
     }
 
-
     const category = await Category.findOne({ where: { id: req.body.category_id } })
 
     if (!category) {
@@ -27,6 +26,7 @@ exports.create = async (req, res) => {
         description: req.body.description,
         short_description: req.body.short_description,
         quantity: req.body.quantity,
+        total_quantity: req.body.quantity,
         regular_price: req.body.regular_price,
         discounted_price: req.body.discounted_price,
         cost_per_item: req.body.cost_per_item,
@@ -91,79 +91,6 @@ exports.findOne = (req, res) => {
             handleError(err, req, res, 0);
         });
 };
-
-
-// exports.update = async (req, res) => {
-//     try {
-//         const food = await FoodItem.findOne({ where: { id: req.params.id } })
-//         if (!food) {
-//             handleError(strings.InvalidFoodId, req, res, 0)
-//             return;
-//         };
-
-//         const { error } = updateFoodItem.validate(req.body,)
-//         if (error) {
-//             handleError(error, req, res, 0)
-//             return;
-//         };
-
-//         const category = await Category.findOne({ where: { id: req.body.category_id } })
-
-//         if (!category) {
-//             handleError(strings.InvalidCategory, req, res, 0);
-//             return
-//         };
-
-//         const data = {
-//             name: req.body.name,
-//             description: req.body.description,
-//             short_description: req.body.short_description,
-//             quantity: req.body.quantity,
-//             regular_price: req.body.regular_price,
-//             discounted_price: req.body.discounted_price,
-//             cost_per_item: req.body.cost_per_item,
-//             food_item_type: req.body.food_item_type,
-//             backorders: req.body.backorders,
-//             stock_status: req.body.stock_status,
-//             is_jain: req.body.is_jain,
-//             category_id: req.body.category_id,
-//         }
-
-//         // await FoodItem.update(data, { where: { id: food.id } })
-
-//         const media = await Media.findOne({ where: { food_item_id: food.id } })
-
-
-//         if (req?.file) {
-
-//             const BASE_PATH = path.join(__dirname, "../../upload");
-
-//             console.log('req.file>>>>>>>>>>>>>>>>>', BASE_PATH);
-
-//             console.log("Before File is deleted.");
-
-
-//             fs.unlink(BASE_PATH + media.name);
-
-//             console.log("File is deleted.", media);
-
-//             const fileData = {
-//                 name: req.file.filename,
-//                 mime_data: req.file.mimetype,
-//                 path: `/media/${req.file?.filename}`,
-//                 food_item_id: result.id
-//             }
-
-//             // await Media.update(fileData, { where: { food_item_id: food.id } })
-//         }
-//         console.log('else file >>>>>>>>>>>>>>>>>');
-
-//         // handleResponse(res, [], strings.FoodItemsSuccessfullyUpdated, 1)
-
-//     } catch (err) {
-//         handleError(err, req, res)
-//     }
-// };
 
 
 exports.update = async (req, res) => {
@@ -240,7 +167,6 @@ exports.update = async (req, res) => {
         handleError(err.message || err, req, res, 500);
     }
 };
-
 
 
 

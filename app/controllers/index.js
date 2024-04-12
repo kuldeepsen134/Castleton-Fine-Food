@@ -10,4 +10,6 @@ module.exports = {
     orders: require('./order'),
     policies: require('./policy'),
     subscribers: require('./subscriber'),
+    subscriptions: require('./subscription'),
+
 }
